@@ -75,8 +75,7 @@ class __FormState extends State<_Form> {
           ButtonWidget(
             title: "Ingresar",
             onPressed: (){
-              print(emailCtrl.text);
-              print(passCtrl.text);
+              Navigator.pushNamed(context, 'usuarios');
             },
           ),
         ],
