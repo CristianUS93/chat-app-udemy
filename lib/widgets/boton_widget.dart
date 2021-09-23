@@ -7,7 +7,7 @@ class ButtonWidget extends StatelessWidget {
     required this.onPressed,
   }) : super(key: key);
   final title;
-  final void Function () onPressed;
+  final void Function ()? onPressed;
 
   @override
   Widget build(BuildContext context) {

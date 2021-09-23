@@ -1,6 +1,9 @@
-import 'package:chat_app_udemy/models/usuario.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+
+import 'package:chat_app_udemy/models/usuario.dart';
+import 'package:chat_app_udemy/services/auth_service.dart';
 
 class UsuariosPage extends StatefulWidget {
   const UsuariosPage({Key? key}) : super(key: key);
@@ -21,15 +24,20 @@ class _UsuariosPageState extends State<UsuariosPage> {
 
   @override
   Widget build(BuildContext context) {
+    final authService = Provider.of<AuthService>(context);
+    final nombreUsuario = authService.usuario!.nombre;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Mi Nombre", style: TextStyle(color: Colors.black87),),
+        title: Text(nombreUsuario, style: TextStyle(color: Colors.black87),),
         centerTitle: true,
         elevation: 1,
         backgroundColor: Colors.white,
         leading: IconButton(
           icon: Icon(Icons.exit_to_app, color: Colors.black87,),
-          onPressed: (){},
+          onPressed: (){
+            AuthService.deleteToken();
+            Navigator.pushReplacementNamed(context, 'login');
+          },
         ),
         actions: [
           Container(

@@ -1,8 +1,12 @@
+import 'package:chat_app_udemy/helpers/mostrar_alerta.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'package:chat_app_udemy/services/auth_service.dart';
 import 'package:chat_app_udemy/widgets/boton_widget.dart';
 import 'package:chat_app_udemy/widgets/custom_input.dart';
 import 'package:chat_app_udemy/widgets/labels_widget.dart';
 import 'package:chat_app_udemy/widgets/logo_widget.dart';
-import 'package:flutter/material.dart';
 
 class RegisterPage extends StatelessWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -54,6 +58,8 @@ class __FormState extends State<_Form> {
 
   @override
   Widget build(BuildContext context) {
+    final authService = Provider.of<AuthService>(context);
+    
     return Container(
       margin: EdgeInsets.only(top: 40),
       padding: EdgeInsets.symmetric(horizontal: 50),
@@ -78,9 +84,16 @@ class __FormState extends State<_Form> {
           ),
           ButtonWidget(
             title: "Registrar",
-            onPressed: (){
-              print(emailCtrl.text);
-              print(passCtrl.text);
+            onPressed: authService.autenticando ? null : ()async {
+              
+              FocusScope.of(context).unfocus();
+              final registerOk = await authService.register(nameCtrl.text.trim(), emailCtrl.text.trim(), passCtrl.text.trim());
+              
+              if(registerOk == true){
+                Navigator.pushReplacementNamed(context, 'usuarios');
+              }else{
+                mostrarAlerta(context, 'Error en el registro', registerOk);
+              }
             },
           ),
         ],
