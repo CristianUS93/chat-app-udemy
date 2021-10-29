@@ -3,7 +3,9 @@ import 'package:provider/provider.dart';
 
 import 'package:chat_app_udemy/pages/login_page.dart';
 import 'package:chat_app_udemy/pages/usuarios_page.dart';
+
 import 'package:chat_app_udemy/services/auth_service.dart';
+import 'package:chat_app_udemy/services/socket_service.dart';
 
 class LoadingPage extends StatelessWidget {
   const LoadingPage({Key? key}) : super(key: key);
@@ -26,10 +28,12 @@ class LoadingPage extends StatelessWidget {
   Future checkLoginState(BuildContext context)async{
 
     final authService = Provider.of<AuthService>(context, listen: false);
+    final socketService = Provider.of<SocketService>(context, listen: false);
 
     final autenticado = await authService.isLoggedIn();
 
     if(autenticado){
+      socketService.connect();
       Navigator.pushReplacement(
         context, 
         PageRouteBuilder(
